@@ -1,17 +1,22 @@
 package com.learn.cloud.discovery;
 
-import com.netflix.discovery.shared.Application;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @EnableEurekaServer
 @SpringBootApplication
 public class ServiceDiscoveryApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ServiceDiscoveryApplication.class);
+        new SpringApplicationBuilder(ServiceDiscoveryApplication.class).web(true).run(args);
+//        SpringApplication.run(ServiceDiscoveryApplication.class, args);
+    }
+
+    @RequestMapping("/user")
+    public String user(){
+        return "user";
     }
 
 }
