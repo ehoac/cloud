@@ -9,6 +9,13 @@ public class UserDto {
     private String avatar;
     private int userServicePort;
 
+    public UserDto(){}
+    public UserDto(Long id, String nickname, String avatar) {
+        this.id = id;
+        this.nickname = nickname;
+        this.avatar = avatar;
+    }
+
     public Long getId() {
         return id;
     }

@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author <a href="ehoac@sina.com">ehoac</a>
  */
-@FeignClient("USERSERVICE")
+@FeignClient(value = "USERSERVICE", fallback = UserServiceFallback.class)
 public interface UserService {
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     List<UserDto> findAll();

@@ -1,7 +1,7 @@
 spring:
   application:
     name: servicediscovery
-sever:
+server:
   port: 9001
 
 eureka:
@@ -12,5 +12,5 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://sdpeer2:9002/eureka/,http://sdpeer3:9003/eureka/
+      defaultZone: http://eh:root@sdpeer2:9002/eureka/,http://eh:root@sdpeer3:9003/eureka/
 

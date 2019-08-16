@@ -7,10 +7,19 @@ eureka:
     register-with-eureka: false
     fetch-registry: false
     service-url:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://eh:root@${eureka.instance.hostname}:${server.port}/eureka/
 #  server:
 #    wait-time-in-ms-when-sync-empty: 5
 
 security:
   basic:
+    enabled: false
+  user:
+    name: eh
+    password: root
+
+endpoints:
+  shutdown:
+    enabled: false
+  configprops:
     enabled: false

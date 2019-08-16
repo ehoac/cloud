@@ -1,10 +1,8 @@
-package com.learn.cloud.discovery;
+package com.learn.cloud.zuul;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @EnableEurekaServer
 @SpringBootApplication

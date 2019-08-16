@@ -9,17 +9,17 @@
         <!--<relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>discovery</artifactId>
+    <artifactId>zuul</artifactId>
     <name>Discovery Server</name>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka-server</artifactId>
+            <artifactId>spring-cloud-starter-zuul</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

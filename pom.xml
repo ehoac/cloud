@@ -18,6 +18,7 @@
         <module>user2</module>
         <module>discovery</module>
         <module>consumer</module>
+        <module>zuul</module>
         <module>config-center</module>
     </modules>
 

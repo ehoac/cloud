@@ -1,0 +1,27 @@
+server:
+  port: 12000
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eh:root@localhost:9000/eureka/
+#  server:
+#    wait-time-in-ms-when-sync-empty: 5
+spring:
+  application:
+    name: ZUUL-PROXY
+
+zuul:
+  ignoredServices: '*'
+  routes:
+    user:
+      path: /user/**
+      serviceId: USERSERVICE
+      sensitive-headers: Cookie,Set-Cookie
+    consumer:
+      path: /consumer/**
+      serviceId: CONSUMERSERVICE
+      sensitive-headers: Cookie,Set-Cookie
+
+security:
+  basic:
+    enabled: false
