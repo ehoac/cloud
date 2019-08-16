@@ -1,0 +1,10 @@
+server:
+  port: 11001
+
+spring:
+  application:
+    name: consumerservice
+  cloud:
+    config:
+      profile: dev
+      uri: http://localhost:13000/

@@ -7,6 +7,6 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/ravitation/cloud/config-center/config
+          uri: https://github.com/ravitation/config-center
           username: ravitation
           password: cph199006006

@@ -1,0 +1,10 @@
+server:
+  port: 12000
+
+spring:
+  application:
+    name: zuul-proxy
+  cloud:
+    config:
+      profile: dev
+      uri: http://localhost:13000/
