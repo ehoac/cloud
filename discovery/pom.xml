@@ -4,26 +4,35 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.learn.cloud</groupId>
-        <artifactId>springcloud-parent</artifactId>
+        <artifactId>parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <!--<relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>discovery</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
     <name>Discovery Server</name>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
+    <description>discovery project for Spring Boot</description>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka-server</artifactId>
+            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
     </dependencies>
+    <build>
+        <finalName>discovery</finalName>
+    </build>
 </project>

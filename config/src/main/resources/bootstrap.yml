@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: config-server
+  profiles:
+      active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/files
+
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://eh:root@localhost:9014/discovery/eureka/

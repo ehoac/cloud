@@ -1,0 +1,27 @@
+server:
+  port: 19000
+  servlet:
+    context-path: /auth
+
+spring:
+  profiles:
+    active: ${spring.cloud.config.profile}
+  application:
+    name: auth
+#  jmx:
+#    default-domain: zuul
+  cloud:
+    config:
+      name: auth
+      profile: dev
+      discovery:
+        service-id: config-server
+        enabled: true
+
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://eh:root@localhost:9014/discovery/eureka/

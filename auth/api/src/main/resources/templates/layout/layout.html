@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:fragment="common_head(title, links, scripts)">
+        <meta charset="UTF-8">
+        <title th:replace="${title}">OAUTH 2</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+        <link rel="shortcut icon" th:href="@{/images/logo_ico_16.ico}" />
+        <link rel="stylesheet" th:href="@{/css/index.css}"/>
+        <link rel="stylesheet" th:href="@{/iconfont/iconfont.css}">
+        <link rel="stylesheet" th:href="@{/css/common.css}"/>
+        <th:block th:replace="${links}" />
+        <script th:src="@{/plugin/jquery/jquery-3.1.0.min.js}"></script>
+        <th:block th:replace="${scripts}" />
+    </head>
+</html>

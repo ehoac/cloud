@@ -4,22 +4,22 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.learn.cloud</groupId>
-        <artifactId>springcloud-parent</artifactId>
+        <artifactId>parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <!--<relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>zuul</artifactId>
-    <name>Discovery Server</name>
-    <packaging>jar</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>Zuul Server</name>
+    <packaging>war</packaging>
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-zuul</artifactId>
+            <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka</artifactId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -30,4 +30,8 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <finalName>zuul</finalName>
+    </build>
 </project>

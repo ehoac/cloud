@@ -1,0 +1,14 @@
+server:
+  port: 9000
+  servlet:
+    context-path: /discovery
+
+spring:
+  application:
+    name: discovery
+  cloud:
+    config:
+      discovery:
+        enabled: false
+      profile: dev
+      uri: http://localhost:9014/config

@@ -1,0 +1,32 @@
+server:
+  port: 9000
+  servlet:
+    context-path: /discovery
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://eh:root@${eureka.instance.hostname}:${server.port}/servers/eureka/
+#  server:
+#    wait-time-in-ms-when-sync-empty: 5
+
+spring:
+  application:
+    name: discovery
+  jmx:
+    default-domain: discovery
+  security:
+    user:
+      name: eh
+      password: root
+
+management:
+  endpoint:
+    shutdown:
+      enabled: false
+    configprops:
+      enabled: false

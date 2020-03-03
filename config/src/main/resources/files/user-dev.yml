@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: user
+  jmx:
+    default-domain: user
+  redis:
+    database: 0
+    host: 192.168.128.128
+    port: 6379
+    password: ehoac
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+    timeout: 5000ms
+
+server:
+  port: 14000
+  servlet:
+    context-path: /user
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://eh:root@localhost:9014/servers/eureka/
+
+security:
+  oauth2:
+    client:
+      client-id: user-client
+      client-secret: user-secret-8888
+      user-authorization-uri: http://localhost:11000/oauth/authorize
+      access-token-uri: http://localhost:11000/oauth/token
+    resource:
+      jwt:
+        key-uri: http://localhost:11000/oauth/token_key
+        key-value: dev
+#      id: user-client
+#      user-info-uri: user-info
+    authorization:
+      check-token-access: http://localhost:11000/oauth/check_token

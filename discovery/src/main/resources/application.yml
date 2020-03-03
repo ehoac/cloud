@@ -1,5 +1,6 @@
 server:
   port: 9000
+
 eureka:
   instance:
     hostname: localhost  # 192.168.15.8
@@ -11,15 +12,17 @@ eureka:
 #  server:
 #    wait-time-in-ms-when-sync-empty: 5
 
-security:
-  basic:
-    enabled: false
-  user:
-    name: eh
-    password: root
+spring:
+  security:
+    basic:
+      enabled: false
+    user:
+      name: eh
+      password: root
 
-endpoints:
-  shutdown:
-    enabled: false
-  configprops:
-    enabled: false
+management:
+  endpoint:
+    shutdown:
+      enabled: false
+    configprops:
+      enabled: false

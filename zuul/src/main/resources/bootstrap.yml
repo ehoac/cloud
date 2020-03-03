@@ -1,10 +1,25 @@
 server:
-  port: 12000
+  port: 15000
+  servlet:
+    context-path: /zuul
 
 spring:
   application:
-    name: zuul-proxy
+    name: zuul
+#  jmx:
+#    default-domain: zuul
   cloud:
     config:
+      name: zuul
       profile: dev
-      uri: http://localhost:13000/
+      discovery:
+        service-id: config-server
+        enabled: true
+
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://eh:root@localhost:9014/discovery/eureka/

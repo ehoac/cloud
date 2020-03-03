@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.learn.cloud</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <artifactId>config</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>config</name>
+    <packaging>war</packaging>
+    <description>Demo project for Spring Boot</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-config-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ant-contrib</groupId>
+            <artifactId>ant-contrib</artifactId>
+            <version>1.0b3</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy</id><!--需要唯一-->
+                        <phase>package</phase><!--当执行package操作时执行一下任务-->
+                        <configuration>
+                            <target><!--任务-->
+                                <echo message="start.................................."/><!--打印-->
+                                <echo message="load maven plugin ant-contrib-1.0b3"/>
+                                <!--加载plugin ant-contrib的配置文件-->
+                                <taskdef resource="net/sf/antcontrib/antlib.xml">
+                                    <classpath><!--加载jar包,${settings.localRepository}的值是你maven settings文件中配置的本地仓库位置-->
+                                        <pathelement location="${settings.localRepository}/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar"/>
+                                    </classpath>
+                                </taskdef>
+                                <!--复制-->
+                                <if>
+                                    <equals arg1="${copy}" arg2="true"/><!--是否复制-->
+                                    <then>
+                                        <echo message="Copy war to your desired path."/>
+                                        <copy todir="${localDir}" overwrite="true"><!--执行复制操作,todir的值是将要复制到的地方,overwrite是否重写-->
+                                            <fileset dir="${project.build.directory}"><!--${project.build.directory}值是你的target目录-->
+                                                <include name="*.war"/><!--target目录下的包-->
+                                            </fileset>
+                                        </copy>
+                                    </then>
+                                </if>
+                                <!--打印-->
+                                <echo message="pom type:${project.packaging}"/>
+                                <echo message="target path:${project.build.directory}"/>
+                                <echo message="maven local repository:${settings.localRepository}"/>
+                                <echo message="if pom type equals pom,delete ant generate target and antrun folder"/>
+                                <echo message="${project.build.finalName}"/>
+                                <!--
+                                因为 maven-antrun-plugin 执行后,会在你的项目中生成一个target/antrun/build-main.xml,
+                                在packageing=pom的项目下也会生成一个这样的文件和文件目录,个人觉得很烦,索引引入ant-contrib依赖,
+                                如果你觉得不烦,可以不添加ant-contrib依赖,下边的if标签也不能使用.
+                                -->
+                                <!--删除-->
+                                <if><!--if 标签-->
+                                    <equals arg1="${project.packaging}" arg2="pom"/> <!--判断当前pom文件的packageing是否是pom类型,-->
+                                    <then><!--如果是pom类型则删除该项目下的target目录-->
+                                        <echo message="delete ${project.build.directory}"/>
+                                        <delete dir="${project.build.directory}"/>
+                                    </then>
+                                </if>
+                                <!--上传文件
+                                    file: 文件路径或者文件名称
+                                        ${project.build.directory} 指向target目录
+                                        ${project.build.finalName} 打包名称
+                                    todir: 目标服务器ip地址和文件路径
+                                -->
+                                <!--<if>
+                                    <equals arg1="${uploadToRemoteDir}" arg2="true"/>
+                                    <then>
+                                        <scp file="${project.build.directory}\${project.build.finalName}.jar"
+                                             todir="${remoteUser}:${remotePassword}@${remoteIp}:${remoteDir}" trust="true"/>
+                                        &lt;!&ndash;连接虚拟机  file: 文件路径或者文件名称 command 执行命令 &ndash;&gt;
+                                        <sshexec host="${remoteIp}"
+                                                 username="${remoteUser}"
+                                                 password="${remotePassword}"
+                                                 command="ls"
+                                                 trust="true"/>
+                                        <echo message="end.................................."/>
+                                    </then>
+                                </if>-->
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <finalName>config</finalName>
+    </build>
+</project>
