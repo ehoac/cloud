@@ -1,6 +1,4 @@
-package com.eh.cloud.auth.api.config.exception.biz;/**
- * Created by caopeihe on 2020/3/2.
- */
+package com.eh.cloud.auth.api.config.exception.biz;
 
 import com.eh.cloud.auth.model.constants.BaseErrors;
 import com.eh.cloud.auth.api.config.exception.BizException;

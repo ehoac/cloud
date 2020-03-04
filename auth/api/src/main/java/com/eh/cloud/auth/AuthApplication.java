@@ -20,9 +20,4 @@ public class AuthApplication {
     public static void main(String[] args) {
         SpringApplication.run(AuthApplication.class, args);
     }
-
-  /*  @Bean
-    public OAuth2RestTemplate restTemplate(UserInfoRestTemplateFactory factory) {
-        return factory.getUserInfoRestTemplate();
-    }*/
 }

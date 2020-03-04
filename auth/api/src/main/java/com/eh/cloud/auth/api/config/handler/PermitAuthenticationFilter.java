@@ -90,7 +90,7 @@ public class PermitAuthenticationFilter extends OAuth2AuthenticationProcessingFi
                     error.set(true);
                     map.put("message",e.getMessage());
                     log.info("** 无校的token信息.　** ");
-                    throw ExceptionUtil.rethrowUnauthorizedException(ExceptionEnum.TOKEN_INVALID_MESSAGE, e.getCause());
+                    throw ExceptionUtil.rethrowUnauthorizedException(ExceptionEnum.TOKEN_INVALID, e.getCause());
                     // throw new AccessDeniedException("无校的token信息.");
                 }
 
@@ -102,7 +102,7 @@ public class PermitAuthenticationFilter extends OAuth2AuthenticationProcessingFi
                     error.set(true);
                     map.put("message",e.getMessage());
                     log.info("** 无校的token信息.　** ");
-                    throw new UnauthorizedException(ExceptionEnum.TOKEN_INVALID_MESSAGE, e.getCause());
+                    throw new UnauthorizedException(ExceptionEnum.TOKEN_INVALID, e.getCause());
 //                    throw new AccessDeniedException("无校的token信息.");
                 }
 
@@ -114,7 +114,7 @@ public class PermitAuthenticationFilter extends OAuth2AuthenticationProcessingFi
             }
 
             if (oAuth2AccessToken == null) {
-                throw new UnauthorizedException(ExceptionEnum.TOKEN_INVALID_MESSAGE);
+                throw new UnauthorizedException(ExceptionEnum.TOKEN_INVALID);
             } else {
                 log.info("token =" +oAuth2AccessToken.getValue());
             }

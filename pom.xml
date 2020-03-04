@@ -21,6 +21,7 @@
         <module>zuul</module>
         <module>config</module>
         <module>auth</module>
+        <module>tools</module>
     </modules>
 
     <properties>
@@ -30,6 +31,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <guava.version>20.0</guava.version>
         <swagger.version>2.6.1</swagger.version>
+        <zxing.version>3.4.0</zxing.version>
         <spring-cloud.version>Hoxton.SR2</spring-cloud.version>
         <localDir>D:/web/tomcat9/webapps</localDir>
         <copy>true</copy>
@@ -50,8 +52,17 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
     <build>

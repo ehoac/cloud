@@ -14,12 +14,12 @@ public enum ExceptionEnum implements BaseErrors {
      */
     INTER_ERROR("系统异常"),
     USER_LOGIN_ERROR("用户名或者密码错误 请重新登录"),
-    USER_LOGIN_EXPIRED("用户未登录，请重新登录"),
-    USER_NO_ACCESS("无权限访问"),
+    USER_LOGIN_EXPIRED("用户未登录或登录超时，请重新登录"),
+    USER_NO_ACCESS("无访问权限"),
     ILLEGAL_ARGUMENT("参数错误"),
     NO_TOKEN("参数无TOKEN"),
-    TOKEN_EXPIRED("TOKEN 过期"),
-    TOKEN_INVALID_MESSAGE("TOKEN 无效");
+    TOKEN_EXPIRED("TOKEN 已过期"),
+    TOKEN_INVALID("无效的TOKEN");
 
     private int status;
     private String code;

@@ -1,4 +1,4 @@
-package com.eh.cloud.auth.model.constants;
+package com.eh.cloud.tools.constants;
 
 /**
  * @author caopeihe
