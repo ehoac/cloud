@@ -158,7 +158,7 @@ public class AllExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleAsyncRequestTimeoutException(AsyncRequestTimeoutException ex, HttpHeaders headers, HttpStatus status, WebRequest webRequest) {
+    protected ResponseEntity<Object> handleAsyncRequestTimeoutException(AsyncRequestTimeoutException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         String msg = ExceptionUtil.getDefaultErrorMessage(request);
         String path = ExceptionUtil.getDefaultErrorPath(request);
         return this.asResponseEntity(status, "", msg, path, ex);
