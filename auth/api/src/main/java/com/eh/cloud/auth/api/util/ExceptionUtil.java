@@ -6,6 +6,14 @@ import com.eh.cloud.auth.api.config.exception.biz.ForbiddenException;
 import com.eh.cloud.auth.api.config.exception.biz.ServerSideException;
 import com.eh.cloud.auth.api.config.exception.biz.UnauthorizedException;
 import com.eh.cloud.auth.model.constants.ExceptionEnum;
+import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.WebRequest;
+
+import javax.servlet.ServletException;
 
 /**
  * @author caopeihe
@@ -16,7 +24,11 @@ import com.eh.cloud.auth.model.constants.ExceptionEnum;
 public class ExceptionUtil {
 
     public static String extractStackTrace (Throwable error){
-        return error.getCause().getMessage();
+        StringBuilder sb = new StringBuilder();
+        for (StackTraceElement str: error.getStackTrace()) {
+            sb.append(str.toString()).append("\n");
+        }
+        return sb.toString();
     }
 
     public static BizException rethrowClientSideException(ExceptionEnum exceptionCode, Throwable cause) {
@@ -46,5 +58,48 @@ public class ExceptionUtil {
             return new ServerSideException(exceptionCode);
         }
         return new ServerSideException(exceptionCode, cause);
+    }
+
+    public static int getBaseErrorStatus(RequestAttributes requestAttributes) {
+        Integer status = internalGetAttribute(requestAttributes, "javax.servlet.error.status_code");
+        return (status == null ? HttpStatus.BAD_REQUEST.value() : status);
+    }
+
+    public static Throwable getDefaultErrorDetail(WebRequest webRequest) {
+        Throwable error = new DefaultErrorAttributes().getError(webRequest);
+        if (error != null) {
+            while (error instanceof ServletException && error.getCause() != null) {
+                error = error.getCause();
+            }
+        }
+        return error;
+    }
+
+    public static String getDefaultErrorMessage(WebRequest webRequest) {
+        Throwable error = getDefaultErrorDetail(webRequest);
+        BindingResult result = internalExtractBindingResult(error);
+        if (result == null) {
+            return error.getMessage();
+        }
+        if (result.getErrorCount() > 0) {
+            return "Validation failed for object='" + result.getObjectName()
+                    + "'. Error count: " + result.getErrorCount();
+        } else {
+            return "No errors";
+        }
+    }
+
+    private static <T> T internalGetAttribute(RequestAttributes requestAttributes, String name) {
+        return (T) requestAttributes.getAttribute(name, RequestAttributes.SCOPE_REQUEST);
+    }
+
+    private static BindingResult internalExtractBindingResult(Throwable error) {
+        if (error instanceof BindingResult) {
+            return (BindingResult) error;
+        }
+        if (error instanceof MethodArgumentNotValidException) {
+            return ((MethodArgumentNotValidException) error).getBindingResult();
+        }
+        return null;
     }
 }

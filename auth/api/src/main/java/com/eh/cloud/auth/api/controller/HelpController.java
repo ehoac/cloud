@@ -10,10 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author caopeihe
@@ -42,9 +39,10 @@ public class HelpController {
         throw ExceptionUtil.rethrowClientSideException(ExceptionEnum.ILLEGAL_ARGUMENT, null);
     }
 
-    @GetMapping("register")
+    @PostMapping("register")
     public void createUser(){
-
+        String number = "!WDF";
+//        int nm = Integer.valueOf(number);
         throw new ClientSideException(ExceptionEnum.INTER_ERROR);
     }
 }

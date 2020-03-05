@@ -20,6 +20,7 @@ public class BizException extends RuntimeException{
     public static final String ERROR_CODE = "code";
     public static final String ERROR_MESSAGE = "msg";
     public static final String ERROR_TRACE = "trace";
+    public static final String ERROR_PATH = "path";
 
     private int status;
     private String code;

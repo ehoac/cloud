@@ -1,7 +1,7 @@
 package com.eh.cloud.auth.api.config;
 
+import com.eh.cloud.auth.api.config.exception.AllExceptionHandler;
 import com.eh.cloud.auth.api.config.exception.BaseErrorAttributes;
-import com.eh.cloud.auth.api.config.exception.ExceptionHandler;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -27,19 +27,21 @@ import javax.servlet.Servlet;
 @ConditionalOnClass({Servlet.class, DispatcherServlet.class, WebMvcConfigurer.class})
 @ConditionalOnMissingBean(ResponseEntityExceptionHandler.class)
 @AutoConfigureBefore(ErrorMvcAutoConfiguration.class)
-public class ExceptionConfig {
+public class ExceptionHandlerConfig{
+
     @Profile({"test", "formal", "prod"})
     @Bean
-    public ResponseEntityExceptionHandler defaultGlobalExceptionHandler() {
+    public ResponseEntityExceptionHandler defaultExceptionHandler() {
+
         //测试、正式环境，不输出异常的stack trace
-        return new ExceptionHandler(false);
+        return new AllExceptionHandler(false);
     }
 
     @Profile({"default","local","dev"})
     @Bean
-    public ResponseEntityExceptionHandler devGlobalExceptionHandler() {
+    public ResponseEntityExceptionHandler devExceptionHandler() {
         //本地、开发环境，输出异常的stack trace
-        return new ExceptionHandler(true);
+        return new AllExceptionHandler(true);
     }
 
     @Profile({"test", "formal", "prod"})
