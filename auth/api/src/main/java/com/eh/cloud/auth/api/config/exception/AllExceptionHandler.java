@@ -5,16 +5,29 @@ import com.eh.cloud.auth.model.constants.ResponseConstant;
 import com.eh.cloud.auth.model.entity.common.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.ConversionNotSupportedException;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.lang.Nullable;
+import org.springframework.validation.BindException;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingPathVariableException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.util.WebUtils;
 
@@ -136,58 +149,117 @@ public class AllExceptionHandler extends ResponseEntityExceptionHandler {
         return new ErrorResponse(400, exception.getMessage(), url);
     }
 
-    // 400错误
-//    @ExceptionHandler(HttpMessageNotReadableException.class)
-//    public ErrorResponse handleHttpMessageNotReadableException(HttpServletRequest request, final Exception e, HttpServletResponse response) {
-//        response.setStatus(HttpStatus.BAD_REQUEST.value());
-//        RuntimeException exception = (RuntimeException) e;
-//        String url = request.getRequestURI();
-//        return new ErrorResponse(400, exception.getMessage(), url);
-//    }
-
-    // 400错误
-//    @ExceptionHandler(TypeMismatchException.class)
-//    public ErrorResponse handleTypeMismatchException(HttpServletRequest request, final Exception e, HttpServletResponse response) {
-//        response.setStatus(HttpStatus.BAD_REQUEST.value());
-//        RuntimeException exception = (RuntimeException) e;
-//        String url = request.getRequestURI();
-//        return new ErrorResponse(400, exception.getMessage(), url);
-//    }
-
-//    // 400错误
-//    @ExceptionHandler(MissingServletRequestParameterException.class)
-//    public ErrorResponse handleMissingServletRequestParameterException(HttpServletRequest request, final Exception e, HttpServletResponse response) {
-//        response.setStatus(HttpStatus.BAD_REQUEST.value());
-//        RuntimeException exception = (RuntimeException) e;
-//        String url = request.getRequestURI();
-//        return new ErrorResponse(400, exception.getMessage(), url);
-//    }
-//
-//    // 405错误
-
+    /** 405 */
     @Override
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         String msg = ExceptionUtil.getDefaultErrorMessage(request);
-        return this.asResponseEntity(status, "", msg, "",  ex);
+        String path = ExceptionUtil.getDefaultErrorPath(request);
+        return this.asResponseEntity(status, "", msg, path,  ex);
     }
-//
-//    // 406错误
-//    @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
-//    public ErrorResponse handleHttpMediaTypeNotAcceptableException(HttpServletRequest request, final Exception e, HttpServletResponse response) {
-//        response.setStatus(HttpStatus.BAD_REQUEST.value());
-//        RuntimeException exception = (RuntimeException) e;
-//        String url = request.getRequestURI();
-//        return new ErrorResponse(400, exception.getMessage(), url);
-//    }
-//
-//    // 500错误
-//    @ExceptionHandler({ConversionNotSupportedException.class, HttpMessageNotWritableException.class})
-//    public ErrorResponse handleServiceException(HttpServletRequest request, final Exception e, HttpServletResponse response) {
-//        response.setStatus(HttpStatus.BAD_REQUEST.value());
-//        RuntimeException exception = (RuntimeException) e;
-//        String url = request.getRequestURI();
-//        return new ErrorResponse(400, exception.getMessage(), url);
-//    }
+
+    @Override
+    protected ResponseEntity<Object> handleAsyncRequestTimeoutException(AsyncRequestTimeoutException ex, HttpHeaders headers, HttpStatus status, WebRequest webRequest) {
+        String msg = ExceptionUtil.getDefaultErrorMessage(request);
+        String path = ExceptionUtil.getDefaultErrorPath(request);
+        return this.asResponseEntity(status, "", msg, path, ex);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String msg = ExceptionUtil.getDefaultErrorMessage(request);
+        String path = ExceptionUtil.getDefaultErrorPath(request);
+        return this.asResponseEntity(status, "", msg, path, ex);
+    }
+
+    /** 406 */
+    @Override
+    protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String msg = ExceptionUtil.getDefaultErrorMessage(request);
+        String path = ExceptionUtil.getDefaultErrorPath(request);
+        return this.asResponseEntity(status, "", msg, path, ex);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String msg = ExceptionUtil.getDefaultErrorMessage(request);
+        String path = ExceptionUtil.getDefaultErrorPath(request);
+        return this.asResponseEntity(status, "", msg, path, ex);
+    }
+
+    /** 400 */
+    @Override
+    protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String msg = ExceptionUtil.getDefaultErrorMessage(request);
+        String path = ExceptionUtil.getDefaultErrorPath(request);
+        return this.asResponseEntity(status, "", msg, path, ex);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleServletRequestBindingException(ServletRequestBindingException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String msg = ExceptionUtil.getDefaultErrorMessage(request);
+        String path = ExceptionUtil.getDefaultErrorPath(request);
+        return this.asResponseEntity(status, "", msg, path, ex);
+    }
+
+    /** 500 */
+    @Override
+    protected ResponseEntity<Object> handleConversionNotSupported(ConversionNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String msg = ExceptionUtil.getDefaultErrorMessage(request);
+        String path = ExceptionUtil.getDefaultErrorPath(request);
+        return this.asResponseEntity(status, "", msg, path, ex);
+    }
+
+    /** 400 */
+    @Override
+    protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String msg = ExceptionUtil.getDefaultErrorMessage(request);
+        String path = ExceptionUtil.getDefaultErrorPath(request);
+        return this.asResponseEntity(status, "", msg, path, ex);
+    }
+
+    /** 400 */
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String msg = ExceptionUtil.getDefaultErrorMessage(request);
+        String path = ExceptionUtil.getDefaultErrorPath(request);
+        return this.asResponseEntity(status, "", msg, path, ex);
+    }
+
+    /** 500 */
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotWritable(HttpMessageNotWritableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String msg = ExceptionUtil.getDefaultErrorMessage(request);
+        String path = ExceptionUtil.getDefaultErrorPath(request);
+        return this.asResponseEntity(status, "", msg, path, ex);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String msg = ExceptionUtil.getDefaultErrorMessage(request);
+        String path = ExceptionUtil.getDefaultErrorPath(request);
+        return this.asResponseEntity(status, "", msg, path, ex);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMissingServletRequestPart(MissingServletRequestPartException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String msg = ExceptionUtil.getDefaultErrorMessage(request);
+        String path = ExceptionUtil.getDefaultErrorPath(request);
+        return this.asResponseEntity(status, "", msg, path, ex);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String msg = ExceptionUtil.getDefaultErrorMessage(request);
+        String path = ExceptionUtil.getDefaultErrorPath(request);
+        return this.asResponseEntity(status, "", msg, path, ex);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String msg = ExceptionUtil.getDefaultErrorMessage(request);
+        String path = ExceptionUtil.getDefaultErrorPath(request);
+        return this.asResponseEntity(status, "", msg, path, ex);
+    }
 
     // 栈溢出
     @ExceptionHandler(StackOverflowError.class)
@@ -243,7 +315,7 @@ public class AllExceptionHandler extends ResponseEntityExceptionHandler {
         data.put(BizException.ERROR_CODE, errorCode);
         data.put(BizException.ERROR_MESSAGE, errorMessage);
         data.put(BizException.ERROR_TRACE, ExceptionUtil.extractStackTrace(ex));
-        data.put(BizException.ERROR_PATH, errorMessage);
+        data.put(BizException.ERROR_PATH, errorPath);
         //是否包含异常的stack trace
         if(includeStackTrace){
             addStackTrace(data, ex);

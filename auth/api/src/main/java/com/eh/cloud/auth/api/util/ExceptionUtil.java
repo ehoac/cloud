@@ -89,6 +89,21 @@ public class ExceptionUtil {
         }
     }
 
+    public static String getDefaultErrorPath(WebRequest webRequest) {
+        String str = webRequest.getDescription(true);
+        String client = "";
+        String path = "";
+        if (str.contains(";")) {
+            String[] args = str.split(";");
+            if (args.length == 2) {
+                client = args[1].split("=")[1];
+                path = args[0].split("=")[1];
+            }
+        }
+
+        return "http://" + client + path;
+    }
+
     private static <T> T internalGetAttribute(RequestAttributes requestAttributes, String name) {
         return (T) requestAttributes.getAttribute(name, RequestAttributes.SCOPE_REQUEST);
     }
