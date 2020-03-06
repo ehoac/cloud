@@ -26,7 +26,9 @@ public class ExceptionUtil {
     public static String extractStackTrace (Throwable error){
         StringBuilder sb = new StringBuilder();
         for (StackTraceElement str: error.getStackTrace()) {
-            sb.append(str.toString()).append("\n");
+            if (str.toString().startsWith("com.eh.cloud.auth")) {
+                sb.append(str.toString()).append("\n");
+            }
         }
         return sb.toString();
     }

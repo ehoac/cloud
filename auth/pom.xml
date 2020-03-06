@@ -16,6 +16,7 @@
         <module>model</module>
         <module>service</module>
         <module>mapper</module>
+        <module>util</module>
     </modules>
     <packaging>pom</packaging>
 

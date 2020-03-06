@@ -6,7 +6,6 @@ import com.eh.cloud.auth.api.config.handler.LogoutSuccessHandler;
 import com.eh.cloud.auth.api.config.handler.PermitAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -22,7 +21,6 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
  */
 @Configuration
 @EnableResourceServer
-@Order(6)
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
     private static final String RESOURCE_ID = "*";
@@ -46,8 +44,6 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .authenticationEntryPoint(authenticationEntryPoint);
     }
 
-
-
     @Override
     public void configure(HttpSecurity http) throws Exception {
         // 配置那些资源需要保护的
@@ -59,9 +55,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .anyRequest().authenticated();
         //自定义token过滤 token校验失败后自定义返回数据格式
         http.addFilterBefore(permitAuthenticationFilter, AbstractPreAuthenticatedProcessingFilter.class);
-
     }
-
 
     /**
      * 重写 token 验证失败后自定义返回数据格式

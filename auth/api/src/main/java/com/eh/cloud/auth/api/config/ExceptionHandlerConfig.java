@@ -32,7 +32,6 @@ public class ExceptionHandlerConfig{
     @Profile({"test", "formal", "prod"})
     @Bean
     public ResponseEntityExceptionHandler defaultExceptionHandler() {
-
         //测试、正式环境，不输出异常的stack trace
         return new AllExceptionHandler(false);
     }

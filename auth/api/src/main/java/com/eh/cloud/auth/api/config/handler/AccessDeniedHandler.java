@@ -27,14 +27,6 @@ public class AccessDeniedHandler extends OAuth2AccessDeniedHandler {
         response.setStatus(HttpStatus.OK.value());
         response.setHeader("Content-Type", "application/json;charset=UTF-8");
         throw new UnauthorizedException(ExceptionEnum.USER_NO_ACCESS, ae.getCause());
-//        try {
-//            // 用户无权限异常
-//            response.getWriter().println(
-//                    Result.info(ResponseConstant.USER_NO_ACCESS_CODE, ResponseConstant.USER_NO_ACCESS_MESSAGE).toJsonString()
-//            );
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
     public AccessDeniedHandler() {

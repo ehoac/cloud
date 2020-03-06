@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout_error::error_head(~{::title}, ~{}, ~{}, ~{})">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Error Message</h1>
+<h2 th:text="${code}">40</h2>
+<ul>
+    <li th:text="${error}"></li>
+    <li th:text="${exception}"></li>
+    <li th:text="*{message}"></li>
+    <li th:text="*{msg}"></li>
+    <li th:text="${path}"></li>
+    <li><span th:text="${timestamp}"></span></li>
+</ul>
+</body>
+</html>

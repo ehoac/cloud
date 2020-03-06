@@ -2,9 +2,11 @@ package com.eh.cloud.auth.api.config;
 
 import com.eh.cloud.auth.api.config.handler.LoginFailHandler;
 import com.eh.cloud.auth.api.config.handler.LoginSuccessHandler;
+import com.eh.cloud.auth.api.config.handler.LogoutSuccessHandler;
 import com.eh.cloud.auth.api.config.user.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -23,8 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Configuration
 @EnableWebSecurity
-//@Order(SecurityProperties.BASIC_AUTH_ORDER)
-@Order(2)
+@Order(SecurityProperties.BASIC_AUTH_ORDER)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableAutoConfiguration(exclude = {
         org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class })
@@ -35,6 +36,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     private LoginSuccessHandler loginSuccessHandler;
     @Autowired
     private LoginFailHandler loginFailHandler;
+    @Autowired
+    private LogoutSuccessHandler logoutSuccessHandler;
 
     @Bean
     @Override
@@ -59,13 +62,15 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/help/**","/login", "/oauth/**").permitAll()
                 // authorizeRequests　配置权限　顺序为先配置需要放行的url 在配置需
-                .anyRequest().authenticated()
+                .antMatchers("/oauth/**").authenticated()
+//                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .failureHandler(loginFailHandler)
                 .successHandler(loginSuccessHandler)
-                .permitAll();
+                .permitAll()
+                .and().logout().logoutSuccessHandler(logoutSuccessHandler).permitAll();
     }
 
     @Override
