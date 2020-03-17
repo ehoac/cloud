@@ -12,7 +12,7 @@ spring:
 #    default-domain: zuul
   cloud:
     config:
-      name: auth
+      name: tools
       profile: dev
       discovery:
         service-id: config-server

@@ -24,8 +24,8 @@ spring:
       max-lifetime: 1800000
       connection-test-query: SELECT 1
 
-mybatis:
-  type-aliases-package: com.eh.cloud.auth.model.entity.*
+#mybatis:
+#  type-aliases-package: com.eh.cloud.auth.model.entity.*
 
 pagehelper:
   helper-dialect: mysql

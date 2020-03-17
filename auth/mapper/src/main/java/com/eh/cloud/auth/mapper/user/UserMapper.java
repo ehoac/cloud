@@ -15,6 +15,6 @@ public interface UserMapper {
 
     @Select("select * from tb_user where name=#{name}")
     SysUser findByName(String name);
-
+    @Select("select * from tb_user where name=#{name}")
     SysUser save(SysUser user);
 }
