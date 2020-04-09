@@ -1,4 +1,4 @@
-package com.eh.cloud.tools.web;
+package com.eh.cloud.tools.web.controller;
 
 import com.eh.cloud.tools.util.UuidUtil;
 import org.apache.commons.lang3.StringUtils;

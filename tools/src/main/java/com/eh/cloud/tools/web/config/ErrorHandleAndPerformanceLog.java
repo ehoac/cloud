@@ -29,13 +29,56 @@ public class ErrorHandleAndPerformanceLog {
 
     @Value("${dc.log.bad.value:3000}")
     private int performanceBadValue;
-
+    /** api pointcut */
     @Pointcut("execution(* com.eh.cloud.tools.api..*.*(..))")
-    public void webCut(){}
+    public void apiCut(){}
+    /** service pointcut */
+    @Pointcut("execution(* com.eh.cloud.tools.service..*.*(..))")
+    public void serviceCut(){}
+    /** controller pointcut */
+    @Pointcut("execution(* com.eh.cloud.tools.web.controller..*.*(..))")
+    public void controllerCut(){}
 
-    @Around("webCut() || serviceCut()")
-    public Result handleControllerMethod(ProceedingJoinPoint pjp) throws Throwable{
+    @Around("serviceCut() || controllerCut()")
+    public Object handleControllerMethod(ProceedingJoinPoint pjp) throws Throwable{
         Stopwatch stopwatch = Stopwatch.createStarted();
+        Object result;
+        try {
+            LOG.info("执行Controller开始: " + pjp.getSignature() + " 参数：" + Lists.newArrayList(pjp.getArgs()).toString());
+            //处理入参特殊字符和sql注入攻击
+            checkRequestParam(pjp);
+
+            //执行访问接口操作
+            result = pjp.proceed(pjp.getArgs());
+            try{
+                LOG.info("执行Controller结束: " + pjp.getSignature() + "， 返回值：" + JSONObject.toJSONString(result));
+                //此处将日志打印放入try-catch是因为项目中有些对象实体bean过于复杂，导致序列化为json的时候报错，但是此处报错并不影响主要功能使用，只是返回结果日志没有打印，所以catch中也不做抛出异常处理
+            }catch (Exception ex){
+                LOG.error(pjp.getSignature()+" 接口记录返回结果失败！，原因为：{}",ex.getMessage());
+            }
+            Long consumeTime = stopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
+            LOG.info("耗时：" + consumeTime + "(毫秒).");
+            //当接口请求时间大于3秒时，标记为异常调用时间，并记录入库
+            if(consumeTime > performanceBadValue){
+                // TODO 记录错误日志 RabbitMQ 或其它
+//                DcPerformanceEntity dcPerformanceEntity = new DcPerformanceEntity();
+//                dcPerformanceEntity.setInterfaceName(pjp.getSignature().toString());
+//                dcPerformanceEntity.setRequestParam(Lists.newArrayList(pjp.getArgs()).toString());
+//                dcPerformanceEntity.setConsumeTime(consumeTime + "毫秒");
+//                RabbitMQMessageTarget mqTarget = RabbitMQMessageTarget.createFanoutTarget(ProjectConstants.DC_KEY_EXCHANGE_PERFORMANCE, new String[] { ProjectConstants.DC_KEY_QUEUE_PERFORMANCE});
+//                rabbitMQService.send(mqTarget, JSON.toJSONString(dcPerformanceEntity));
+            }
+        } catch (Exception throwable) {
+            result = JSONObject.toJSONString(handlerException(pjp, throwable));
+        }
+
+        return result;
+    }
+
+    @Around("apiCut()")
+    public Result handleApiMethod(ProceedingJoinPoint pjp) throws Throwable{
+        Stopwatch stopwatch = Stopwatch.createStarted();
+
         Result result;
         try {
             LOG.info("执行Controller开始: " + pjp.getSignature() + " 参数：" + Lists.newArrayList(pjp.getArgs()).toString());
